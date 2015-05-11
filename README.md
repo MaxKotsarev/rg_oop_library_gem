@@ -1,9 +1,5 @@
 # LibraryGem
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/library_gem`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -22,18 +18,55 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+	require 'library_gem'
+	
+	#ADD SOME TEST DATA
+	library = LibraryGem::Library.new 
+	library.authors = [
+		LibraryGem::Author.new("author 1", "author 1 was born in 1788"),
+		LibraryGem::Author.new("author 2"),
+		LibraryGem::Author.new("author 3"),
+		LibraryGem::Author.new("author 4")
+	]
 
-## Development
+	library.books = [
+		LibraryGem::Book.new("Book 1", "author 1"),
+		LibraryGem::Book.new("Book 2", "author 2"),
+		LibraryGem::Book.new("Book 3", "author 3"),
+		LibraryGem::Book.new("Book 4", "author 4")
+	]
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
+	library.readers = [
+		LibraryGem::Reader.new('Ivan', 'Ivan@gmail.com', 'Dnepr', 'Karla Marksa'),
+		LibraryGem::Reader.new('Petr', 'Petr@gmail.com', 'Dnepr', 'Gogolya', '5'),
+		LibraryGem::Reader.new('Olga', 'Olga@gmail.com', 'Dnepr', 'Gagarina'),
+		LibraryGem::Reader.new('Katya', 'Katya@gmail.com', 'Dnepr', 'Karla Marksa')
+	]
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+	library.orders = [
+		LibraryGem::Order.new("Book 1", "Ivan"),
+		LibraryGem::Order.new("Book 2", "Petr"),
+		LibraryGem::Order.new("Book 2", "Olga"),
+		LibraryGem::Order.new("Book 1", "Katya"),
+		LibraryGem::Order.new("Book 2", "Ivan"),
+		LibraryGem::Order.new("Book 2", "Katya"),
+		LibraryGem::Order.new("Book 3", "Olga"),
+		LibraryGem::Order.new("Book 3", "Petr"),
+		LibraryGem::Order.new("Book 4", "Ivan"),
+		LibraryGem::Order.new("Book 1", "Katya")
+	]
 
-## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/library_gem/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+	# TEST CALL OF METHODS 
+	library.most_popular_book
+	# => The most popular book is 'Book 2'. It was ordered 4 times.
+
+	library.top_reders_of("Book 1")
+	# => Book 1 was taken by:
+	# => - Katya (2 times)
+	# => - Ivan (1 time)
+
+	library.count_readers_of_top_books(3)
+	# => Top 3 books was ordered by 4 readers.
+
+	#library.save_to('./lirary_db.txt')
