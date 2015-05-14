@@ -72,5 +72,5 @@ Or install it yourself as:
 	# => The most popular book is 'Book 2'. It was ordered 4 times.
 	# => Book 1 was taken by:
 	# => - Katya (2 times)
-	# => - Ivan (1 times)
+	# => - Ivan (1 time)
 	# => Top 3 books was ordered by 4 readers.
