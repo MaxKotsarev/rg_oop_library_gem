@@ -1,6 +1,8 @@
 require "./library_gem/version"
 require './library_gem/classes'
 require 'date'
+require 'yaml'
+
 
 module LibraryGem
 	class Library 
@@ -10,10 +12,10 @@ module LibraryGem
 			@books, @orders, @readers, @authors = [], [], [], []
 		end
 
-		def top_reders_of(book)
-			readers = count_same_items_in(@orders.select {|i| i.book == book}.map(&:reader)).sort_by{|k, v| v}.reverse 
+		def top_reders_of(book, readers_amount = 3)
+			sorted_book_readers = count_same_items_in(@orders.select {|i| i.book == book}.map(&:reader)).sort_by{|k, v| v}.reverse 
 			puts "#{book} was taken by:"
-			readers.each do |k, v|
+			sorted_book_readers.first(readers_amount).each do |k, v|
 				puts "- #{k} (#{v} " + (v > 1? "times)" : "time)")
 			end
 		end
@@ -27,7 +29,7 @@ module LibraryGem
 			end
 		end
 
-		def count_readers_of_top_books(books_amount)
+		def count_readers_of_top_books(books_amount = 3)
 			top_books = sorted_by_orders.keys.first(books_amount)
 			orders_with_top_books = @orders.select {|i| top_books.include? i.book} 
 			count_readers = orders_with_top_books.map(&:reader).uniq.size
@@ -35,11 +37,12 @@ module LibraryGem
 		end
 
 		def save_to(file_name)
-			File.open(file_name, 'w') {|f| f.write(Marshal.dump(self)) }
+			File.open(file_name, 'w') {|f| f.write(YAML.dump(self)) }
+			puts "All library data was saved to #{file_name}"
 	    end
 
 		def self.load_from(file_name)
-			Marshal.load(File.read(file_name))
+			YAML.load(File.read(file_name))
 		end
 		
 		
@@ -54,7 +57,6 @@ module LibraryGem
 		end
 	end 
 end
-
 
 
 
